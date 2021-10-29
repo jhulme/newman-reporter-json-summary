@@ -18,7 +18,9 @@ var _ = require('lodash');
 function createSummary(summary) {
     // Filter the summary and kick out any failures found that have no parent defined (e.g failures issued from pre-request script execution)
     summary.run.failures.forEach(function(failure) {
+        console.log(`Scanning for Bad Parents.`)
         if (_.isUndefined(failure.parent)) {
+            console.log(`Bad Parent detected. Removing.`)
             _.pull(summary.run.failures, failure)
         }
     })
