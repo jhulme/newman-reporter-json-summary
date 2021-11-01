@@ -16,7 +16,13 @@ var _ = require('lodash');
  */
 
 function createSummary(summary) {
-    
+
+    //Strip out any errors with an undefined parent. For now these errors are dropped into the undefs array
+    //should we decide in the future that processing of them is also required.
+    let undefs = _.remove(summary.run.failures, function(f) {
+        return _.isUndefined(f.parent)
+    })
+
     // Just pull out the miminum parts for each failure
     var failures = [];
     summary.run.failures.forEach(function(failure) {
