@@ -17,14 +17,20 @@ var _ = require('lodash');
 
 function createSummary(summary) {
     // Filter the summary and kick out any failures found that have no parent defined (e.g failures issued from pre-request script execution)
-    summary.run.failures.forEach(function(failure) {
-        console.log(`Scanning for Bad Parents.`)
-        if (_.isUndefined(failure.parent)) {
-            console.log(`Bad Parent detected. Removing.`)
-            _.pull(summary.run.failures, failure)
-        }
+    // summary.run.failures.forEach(function(failure) {
+    //     console.log(`Scanning for Bad Parents.`)
+    //     if (_.isUndefined(failure.parent)) {
+    //         console.log(`Bad Parent detected. Removing.`)
+    //         _.pull(summary.run.failures, failure)
+    //     }
+    // })
+
+    let undefs = _.remove(summary.run.failures, function(f) {
+        return _.isUndefined(f.parent)
     })
 
+    console.log(`RUN FAILURES: ${summary.run.failures}`)
+    console.log(`UNDEFS${undefs}`)
 
     // Just pull out the miminum parts for each failure
     var failures = [];
